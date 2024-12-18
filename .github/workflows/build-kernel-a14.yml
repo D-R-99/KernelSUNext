@@ -1,4 +1,5 @@
 name: Build Kernel - Android 14
+
 on:
   push:
     branches: [ "susfs" ]
@@ -15,6 +16,7 @@ on:
       - ".github/scripts/build-a13.sh"
       - "kernel/**"
   workflow_call:
+
 jobs:
   build-kernel:
     if: github.event_name != 'pull_request' && github.ref != 'refs/heads/susfs'
@@ -94,6 +96,17 @@ jobs:
         with:
           path: KernelSU
           fetch-depth: 0
+
+      - name: Clone the susfs4ksu repo
+        run: |
+          git clone https://gitlab.com/simonpunk/susfs4ksu.git KernelSUNext/KernelSUNext
+          cd KernelSUNext/KernelSUNext
+          git checkout susfs
+
+      - name: List directory structure
+        run: |
+          echo "Current directory structure:"
+          ls -R
 
       - name: List artifacts
         run: |
